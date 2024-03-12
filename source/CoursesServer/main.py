@@ -15,6 +15,12 @@ class Column(StrEnum):
     Lecturer = "שם מרצה"
     StartTime = "שעת התחלה"
     EndTime = "שעת סיום"
+    TotalHours = "סה\"כ שעות"
+    Classroom = "תיאור כיתה"
+    Department = "תיאור חוג"
+    Credits = "נ\"ז"
+    CourseType = "סוג מקצוע"
+
 
 
 class Day(Enum):
@@ -35,15 +41,15 @@ class Course:
         self.lectures = []
         self.exercises = []
 
-    def add_lecture(self, row):
+    def add_lecture(self, row) -> None:
         self.lectures.append(
-            Lesson(row['קבוצה'], row['תיאור נושא'], row['יום בשבוע'], row['שם מרצה'], row['שעת התחלה'], row['שעת סיום'],
-                   row['סה"כ שעות'], row['תיאור כיתה']))
+            Lesson(row[Column.Group], row[Column.Subject], row[Column.Day], row[Column.Lecturer], row[Column.StartTime],
+                   row[Column.EndTime], row[Column.Classroom]))
 
-    def add_exercise(self, row):
+    def add_exercise(self, row) -> None:
         self.exercises.append(
-            Lesson(row['קבוצה'], row['תיאור נושא'],row['יום בשבוע'], row['שם מרצה'], row['שעת התחלה'], row['שעת סיום'],
-                   row['סה"כ שעות'], row['תיאור כיתה']))
+            Lesson(row[Column.Group], row[Column.Subject], row[Column.Day], row[Column.Lecturer], row[Column.StartTime],
+                   row[Column.EndTime], row[Column.Classroom]))
 
 
 @dataclass
@@ -61,13 +67,13 @@ class Lesson:
         return datetime.combine(date.min, self.end_time) - datetime.combine(date.min, self.start_time)
 
 
-def read_courses_file():
+def read_courses_file() -> pd.DataFrame: 
     courses_table_datapath = "./input/coursesFile.xlsx"
     courses_data = pd.read_excel(courses_table_datapath)
     return courses_data
 
 
-def init_courses_map():
+def init_courses_map() -> dict[str, Course]:
     courses_map = {}
 
     courses_data = read_courses_file()
