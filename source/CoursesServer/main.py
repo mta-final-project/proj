@@ -1,7 +1,11 @@
+from datetime import time, timedelta, datetime, date
 from dataclasses import dataclass
 from enum import Enum
 import pandas as pd
 from rich import print
+
+# TODO
+# set credits to 0 if there's no value
 
 class Day(Enum):
     MON = 1
@@ -32,20 +36,23 @@ class Course:
                    row['סה"כ שעות'], row['תיאור כיתה']))
 
 
+@dataclass
 class Lesson:
-    def __init__(self, group, subject, day, lecturer, start_time, end_time, duration, classroom):
-        self.group = group
-        self.subject = subject
-        self.day = day
-        self.lecturer = lecturer
-        self.start_time = start_time
-        self.end_time = end_time
-        self.duration = duration
-        self.classroom = classroom
+    group: str
+    subject: str
+    day: Day
+    lecturer: str
+    start_time: time
+    end_time: time
+    classroom: str
+
+    @property
+    def duration(self) -> timedelta:
+        return datetime.combine(date.min, self.end_time) - datetime.combine(date.min, self.start_time)
 
 
 def read_courses_file():
-    courses_table_datapath = r"C:\Users\omerm\Desktop\coursesFile.xlsx"
+    courses_table_datapath = "./input/coursesFile.xlsx"
     courses_data = pd.read_excel(courses_table_datapath)
     return courses_data
 
