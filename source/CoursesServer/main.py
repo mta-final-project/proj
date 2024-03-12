@@ -5,6 +5,7 @@ import pandas as pd
 
 # TODO
 # set credits to 0 if there's no value
+# convert Course class into a dataclass
 
 
 class Column(StrEnum):
