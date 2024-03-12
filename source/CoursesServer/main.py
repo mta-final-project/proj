@@ -2,7 +2,6 @@ from datetime import time, timedelta, datetime, date
 from dataclasses import dataclass
 from enum import Enum, StrEnum
 import pandas as pd
-from rich import print
 
 # TODO
 # set credits to 0 if there's no value
