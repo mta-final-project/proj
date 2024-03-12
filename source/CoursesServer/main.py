@@ -34,19 +34,19 @@ class Day(Enum):
 
 
 class Course:
-    def __init__(self, department, subject, credits, lectures=None, exercises=None):
+    def __init__(self, department: str, subject: str, credits: int, lectures=None, exercises=None):
         self.department = department
         self.subject = subject
         self.credits = credits
         self.lectures = []
         self.exercises = []
 
-    def add_lecture(self, row) -> None:
+    def add_lecture(self, row: pd.Series) -> None:
         self.lectures.append(
             Lesson(row[Column.Group], row[Column.Subject], row[Column.Day], row[Column.Lecturer], row[Column.StartTime],
                    row[Column.EndTime], row[Column.Classroom]))
 
-    def add_exercise(self, row) -> None:
+    def add_exercise(self, row: pd.Series) -> None:
         self.exercises.append(
             Lesson(row[Column.Group], row[Column.Subject], row[Column.Day], row[Column.Lecturer], row[Column.StartTime],
                    row[Column.EndTime], row[Column.Classroom]))
@@ -81,15 +81,15 @@ def init_courses_map() -> dict[str, Course]:
     # Iterate through the DataFrame
     for index, row in courses_data.iterrows():
         # Get the current value
-        curr_course = row['תיאור נושא'] # שם הקורס
+        curr_course = row[Column.Subject] # שם הקורס
 
         # Check if the course is already in the map
         if curr_course not in courses_map:
             # If not, create a new Course object for this course
             courses_map[curr_course] = Course(
-                department=row['תיאור חוג'],
-                subject=row['תיאור נושא'], # שם הקורס
-                credits=row['נ"ז']
+                department=row[Column.Department], # שם החוג
+                subject=row[Column.Subject], # שם הקורס
+                credits=row[Column.Credits] # נ''ז
             )
 
         # If the course type is not None and is a lecture or exercise, add it to the respective list
