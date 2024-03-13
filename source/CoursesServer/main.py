@@ -40,6 +40,8 @@ class Course:
         self.lectures = []
         self.exercises = []
 
+    # TODO I don't see the benefit of this function, the lectures property is already available for the user, let him append it himself
+    # if anything it may be useful to add a class-method to the Lesson class that accept a pandas row
     def add_lecture(self, row: pd.Series) -> None:
         self.lectures.append(
             Lesson(
@@ -53,6 +55,7 @@ class Course:
             )
         )
 
+    # TODO same as add_lecture
     def add_exercise(self, row: pd.Series) -> None:
         self.exercises.append(
             Lesson(
@@ -98,6 +101,7 @@ def init_courses_map() -> dict[str, Course]:
     # Iterate through the DataFrame
     for index, row in courses_data.iterrows():
         # Get the current value
+        # TODO i think those comment (with column names) are redundant since anyone can easily look at the enum definition
         curr_course = row[Column.Subject] # שם הקורס
 
         # Check if the course is already in the map
@@ -110,7 +114,7 @@ def init_courses_map() -> dict[str, Course]:
             )
 
         # If the course type is not None and is a lecture or exercise, add it to the respective list
-        if row["סוג מקצוע"] not in [7, 13, 14, 15]:
+        if row["סוג מקצוע"] not in [7, 13, 14, 15]:  # TODO magic numbers, should be defined somewhere else, not in the middle of the func
             courses_map[curr_course].add_lecture(row)
         else:
             courses_map[curr_course].add_exercise(row)
