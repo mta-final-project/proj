@@ -1,5 +1,5 @@
 from datetime import time, timedelta, datetime, date
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from enum import Enum, StrEnum
 import pandas as pd
 
@@ -32,13 +32,30 @@ class Day(Enum):
     SUN = 7
 
 
+@dataclass
+class Lesson:
+    group: str
+    subject: str
+    day: Day
+    lecturer: str
+    start_time: time
+    end_time: time
+    classroom: str
+
+    @property
+    def duration(self) -> timedelta:
+        return datetime.combine(date.min, self.end_time) - datetime.combine(
+            date.min, self.start_time
+        )
+
+
+@dataclass
 class Course:
-    def __init__(self, department: str, subject: str, credits: int, lectures=None, exercises=None):
-        self.department = department
-        self.subject = subject
-        self.credits = credits
-        self.lectures = []
-        self.exercises = []
+    department: str
+    subject: str
+    credits: int
+    lectures: list[Lesson] = field(default_factory=list)
+    exercises: list[Lesson] = field(default_factory=list)
 
     # TODO I don't see the benefit of this function, the lectures property is already available for the user, let him append it himself
     # if anything it may be useful to add a class-method to the Lesson class that accept a pandas row
@@ -67,23 +84,6 @@ class Course:
                 row[Column.EndTime],
                 row[Column.Classroom],
             )
-        )
-
-
-@dataclass
-class Lesson:
-    group: str
-    subject: str
-    day: Day
-    lecturer: str
-    start_time: time
-    end_time: time
-    classroom: str
-
-    @property
-    def duration(self) -> timedelta:
-        return datetime.combine(date.min, self.end_time) - datetime.combine(
-            date.min, self.start_time
         )
 
 
