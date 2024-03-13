@@ -103,19 +103,20 @@ def init_courses_map() -> dict[str, Course]:
     for index, row in courses_data.iterrows():
         # Get the current value
         # TODO i think those comment (with column names) are redundant since anyone can easily look at the enum definition
-        curr_course = row[Column.Subject] # שם הקורס
+        curr_course = row[Column.Subject]  # שם הקורס
 
         # Check if the course is already in the map
         if curr_course not in courses_map:
             # If not, create a new Course object for this course
             courses_map[curr_course] = Course(
-                department=row[Column.Department], # שם החוג
-                subject=row[Column.Subject], # שם הקורס
-                credits=row[Column.Credits] # נ''ז
+                department=row[Column.Department],  # שם החוג
+                subject=row[Column.Subject],  # שם הקורס
+                credits=row[Column.Credits],  # נ''ז
             )
 
         # If the course type is not None and is a lecture or exercise, add it to the respective list
-        if row[Column.CourseType] not in [7, 13, 14, 15]:  # TODO magic numbers, should be defined somewhere else, not in the middle of the func
+        # TODO magic numbers, should be defined somewhere else, not in the middle of the func
+        if row[Column.CourseType] not in [7, 13, 14, 15]:
             courses_map[curr_course].add_lecture(row)
         else:
             courses_map[curr_course].add_exercise(row)
