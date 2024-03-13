@@ -88,6 +88,7 @@ class Course:
 
 
 def read_courses_file() -> pd.DataFrame:
+    # TODO the function should the path as a param, not hardcoded value
     courses_table_datapath = "./input/coursesFile.xlsx"
     courses_data = pd.read_excel(courses_table_datapath)
     return courses_data
