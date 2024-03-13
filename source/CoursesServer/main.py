@@ -125,6 +125,10 @@ def init_courses_map() -> dict[str, Course]:
 
 def main():
     courses = init_courses_map()
+    # TODO even if only used for debugging purposes, this code does not need to be here. it won't be used in the final script.
+    # i don't mean you shouldn't have write it, but maybe don't commit it, or maybe write it in a separate script that you don't intend to commit
+    # when committing code with any (decent) ide, it should give you the option to choose which changes to include in the commit
+    # (even between changes within the same file)
     with open("output.txt", "w") as file:
         for course_name, course in courses.items():
             file.write(
