@@ -115,7 +115,7 @@ def init_courses_map() -> dict[str, Course]:
             )
 
         # If the course type is not None and is a lecture or exercise, add it to the respective list
-        if row["סוג מקצוע"] not in [7, 13, 14, 15]:  # TODO magic numbers, should be defined somewhere else, not in the middle of the func
+        if row[Column.CourseType] not in [7, 13, 14, 15]:  # TODO magic numbers, should be defined somewhere else, not in the middle of the func
             courses_map[curr_course].add_lecture(row)
         else:
             courses_map[curr_course].add_exercise(row)
