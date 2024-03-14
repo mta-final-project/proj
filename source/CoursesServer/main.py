@@ -15,10 +15,10 @@ class Column(StrEnum):
     Lecturer = "שם מרצה"
     StartTime = "שעת התחלה"
     EndTime = "שעת סיום"
-    TotalHours = 'סה"כ שעות'
+    TotalHours = "סה\"כ שעות"
     Classroom = "תיאור כיתה"
     Department = "תיאור חוג"
-    Credits = 'נ"ז'
+    Credits = "נ\"ז"
     CourseType = "סוג מקצוע"
 
 
