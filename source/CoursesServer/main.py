@@ -3,14 +3,11 @@ import pandas as pd
 from models import Course, Lesson, Column, LECTURES_IDS
 
 
-# TODO
-# set credits to 0 if there's no value
+def read_courses_file(path: str) -> pd.DataFrame:
+    courses_df = pd.read_excel(path)
+    courses_df = courses_df[Column.Credits].fillna(0)
 
-
-def read_courses_file(data_path: str) -> pd.DataFrame:
-    courses_table_data_path = data_path
-    courses_data = pd.read_excel(courses_table_data_path)
-    return courses_data
+    return courses_df
 
 
 def init_courses_map(courses_file_datapath: str) -> dict[str, Course]:
