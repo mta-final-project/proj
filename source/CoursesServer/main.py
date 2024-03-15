@@ -70,10 +70,9 @@ class Course:
     exercises: list[Lesson] = field(default_factory=list)
 
 
-def read_courses_file(datapath: str) -> pd.DataFrame:
-    # TODO the function should the path as a param, not hardcoded value- DONE
-    courses_table_datapath = datapath
-    courses_data = pd.read_excel(courses_table_datapath)
+def read_courses_file(data_path: str) -> pd.DataFrame:
+    courses_table_data_path = data_path
+    courses_data = pd.read_excel(courses_table_data_path)
     return courses_data
 
 
@@ -84,7 +83,6 @@ def init_courses_map(courses_file_datapath: str) -> dict[str, Course]:
     # Iterate through the DataFrame
     for index, row in courses_data.iterrows():
         # Get the current value
-        # TODO i think those comment (with column names) are redundant since anyone can easily look at the enum definition -DONE
         curr_course = row[Column.Subject]  
 
         # Check if the course is already in the map
