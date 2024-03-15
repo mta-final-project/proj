@@ -7,6 +7,8 @@ import pandas as pd
 # TODO
 # set credits to 0 if there's no value
 
+LECTURES_IDS = [7, 13, 14, 15]
+
 
 class Column(StrEnum):
     Group = "קבוצה"
@@ -95,10 +97,9 @@ def init_courses_map(courses_file_datapath: str) -> dict[str, Course]:
             )
 
         # If the course type is not None and is a lecture or exercise, add it to the respective list - i did not understand
-        # TODO magic numbers, should be defined somewhere else, not in the middle of the func -where should i define them? 
         lesson = Lesson.from_row(row)
 
-        if row[Column.CourseType] not in [7, 13, 14, 15]:
+        if row[Column.CourseType] not in LECTURES_IDS:
             courses_map[curr_course].lectures.append(lesson)
         else:
             courses_map[curr_course].exercises.append(lesson)
