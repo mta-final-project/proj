@@ -5,7 +5,7 @@ import pandas as pd
 
 # TODO
 # set credits to 0 if there's no value
-# convert Course class into a dataclass
+# convert Course class into a dataclass - you did it already...?
 
 
 class Column(StrEnum):
@@ -87,35 +87,34 @@ class Course:
         )
 
 
-def read_courses_file() -> pd.DataFrame:
-    # TODO the function should the path as a param, not hardcoded value
-    courses_table_datapath = "./input/coursesFile.xlsx"
+def read_courses_file(datapath: str) -> pd.DataFrame:
+    # TODO the function should the path as a param, not hardcoded value- DONE
+    courses_table_datapath = datapath
     courses_data = pd.read_excel(courses_table_datapath)
     return courses_data
 
 
-def init_courses_map() -> dict[str, Course]:
+def init_courses_map(courses_file_datapath: str) -> dict[str, Course]:
     courses_map = {}
-
-    courses_data = read_courses_file()
+    courses_data = read_courses_file(courses_file_datapath)
 
     # Iterate through the DataFrame
     for index, row in courses_data.iterrows():
         # Get the current value
-        # TODO i think those comment (with column names) are redundant since anyone can easily look at the enum definition
-        curr_course = row[Column.Subject]  # שם הקורס
+        # TODO i think those comment (with column names) are redundant since anyone can easily look at the enum definition -DONE
+        curr_course = row[Column.Subject]  
 
         # Check if the course is already in the map
         if curr_course not in courses_map:
             # If not, create a new Course object for this course
             courses_map[curr_course] = Course(
-                department=row[Column.Department],  # שם החוג
-                subject=row[Column.Subject],  # שם הקורס
-                credits=row[Column.Credits],  # נ''ז
+                department=row[Column.Department],   
+                subject=row[Column.Subject],
+                credits=row[Column.Credits],  
             )
 
-        # If the course type is not None and is a lecture or exercise, add it to the respective list
-        # TODO magic numbers, should be defined somewhere else, not in the middle of the func
+        # If the course type is not None and is a lecture or exercise, add it to the respective list - i did not understand
+        # TODO magic numbers, should be defined somewhere else, not in the middle of the func -where should i define them? 
         if row[Column.CourseType] not in [7, 13, 14, 15]:
             courses_map[curr_course].add_lecture(row)
         else:
@@ -125,7 +124,7 @@ def init_courses_map() -> dict[str, Course]:
 
 
 def main():
-    courses = init_courses_map()
+    courses = init_courses_map("./input/coursesFile.xlsx")
     # TODO even if only used for debugging purposes, this code does not need to be here. it won't be used in the final script.
     # i don't mean you shouldn't have write it, but maybe don't commit it, or maybe write it in a separate script that you don't intend to commit
     # when committing code with any (decent) ide, it should give you the option to choose which changes to include in the commit
