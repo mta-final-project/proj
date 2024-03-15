@@ -17,15 +17,15 @@ def init_courses_map(courses_file_datapath: str) -> dict[str, Course]:
     # Iterate through the DataFrame
     for index, row in courses_data.iterrows():
         # Get the current value
-        curr_course = row[Column.Subject]  
+        curr_course = row[Column.Subject]
 
         # Check if the course is already in the map
         if curr_course not in courses_map:
             # If not, create a new Course object for this course
             courses_map[curr_course] = Course(
-                department=row[Column.Department],   
+                department=row[Column.Department],
                 subject=row[Column.Subject],
-                credits=row[Column.Credits],  
+                credits=row[Column.Credits],
             )
 
         lesson = Lesson.from_row(row)
