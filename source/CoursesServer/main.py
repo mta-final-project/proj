@@ -96,7 +96,6 @@ def init_courses_map(courses_file_datapath: str) -> dict[str, Course]:
                 credits=row[Column.Credits],  
             )
 
-        # If the course type is not None and is a lecture or exercise, add it to the respective list - i did not understand
         lesson = Lesson.from_row(row)
 
         if row[Column.CourseType] not in LECTURES_IDS:
