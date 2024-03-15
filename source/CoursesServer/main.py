@@ -1,3 +1,4 @@
+from typing import Self
 from datetime import time, timedelta, datetime, date
 from dataclasses import dataclass, field
 from enum import Enum, StrEnum
@@ -5,7 +6,6 @@ import pandas as pd
 
 # TODO
 # set credits to 0 if there's no value
-# convert Course class into a dataclass - you did it already...?
 
 
 class Column(StrEnum):
@@ -42,6 +42,18 @@ class Lesson:
     end_time: time
     classroom: str
 
+    @classmethod
+    def from_row(cls, row: pd.Series) -> Self:
+        return cls(
+            row[Column.Group],
+            row[Column.Subject],
+            row[Column.Day],
+            row[Column.Lecturer],
+            row[Column.StartTime],
+            row[Column.EndTime],
+            row[Column.Classroom],
+        )
+
     @property
     def duration(self) -> timedelta:
         return datetime.combine(date.min, self.end_time) - datetime.combine(
@@ -56,35 +68,6 @@ class Course:
     credits: int
     lectures: list[Lesson] = field(default_factory=list)
     exercises: list[Lesson] = field(default_factory=list)
-
-    # TODO I don't see the benefit of this function, the lectures property is already available for the user, let him append it himself
-    # if anything it may be useful to add a class-method to the Lesson class that accept a pandas row
-    def add_lecture(self, row: pd.Series) -> None:
-        self.lectures.append(
-            Lesson(
-                row[Column.Group],
-                row[Column.Subject],
-                row[Column.Day],
-                row[Column.Lecturer],
-                row[Column.StartTime],
-                row[Column.EndTime],
-                row[Column.Classroom],
-            )
-        )
-
-    # TODO same as add_lecture
-    def add_exercise(self, row: pd.Series) -> None:
-        self.exercises.append(
-            Lesson(
-                row[Column.Group],
-                row[Column.Subject],
-                row[Column.Day],
-                row[Column.Lecturer],
-                row[Column.StartTime],
-                row[Column.EndTime],
-                row[Column.Classroom],
-            )
-        )
 
 
 def read_courses_file(datapath: str) -> pd.DataFrame:
@@ -115,10 +98,12 @@ def init_courses_map(courses_file_datapath: str) -> dict[str, Course]:
 
         # If the course type is not None and is a lecture or exercise, add it to the respective list - i did not understand
         # TODO magic numbers, should be defined somewhere else, not in the middle of the func -where should i define them? 
+        lesson = Lesson.from_row(row)
+
         if row[Column.CourseType] not in [7, 13, 14, 15]:
-            courses_map[curr_course].add_lecture(row)
+            courses_map[curr_course].lectures.append(lesson)
         else:
-            courses_map[curr_course].add_exercise(row)
+            courses_map[curr_course].exercises.append(lesson)
 
     return courses_map
 
