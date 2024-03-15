@@ -1,75 +1,10 @@
-from typing import Self
-from datetime import time, timedelta, datetime, date
-from dataclasses import dataclass, field
-from enum import Enum, StrEnum
 import pandas as pd
+
+from models import Course, Lesson, Column, LECTURES_IDS
+
 
 # TODO
 # set credits to 0 if there's no value
-
-LECTURES_IDS = [7, 13, 14, 15]
-
-
-class Column(StrEnum):
-    Group = "קבוצה"
-    Subject = "תיאור נושא"
-    Day = "יום בשבוע"
-    Lecturer = "שם מרצה"
-    StartTime = "שעת התחלה"
-    EndTime = "שעת סיום"
-    TotalHours = 'סה"כ שעות'
-    Classroom = "תיאור כיתה"
-    Department = "תיאור חוג"
-    Credits = 'נ"ז'
-    CourseType = "סוג מקצוע"
-
-
-class Day(Enum):
-    MON = 1
-    TUE = 2
-    WED = 3
-    THU = 4
-    FRI = 5
-    SAT = 6
-    SUN = 7
-
-
-@dataclass
-class Lesson:
-    group: str
-    subject: str
-    day: Day
-    lecturer: str
-    start_time: time
-    end_time: time
-    classroom: str
-
-    @classmethod
-    def from_row(cls, row: pd.Series) -> Self:
-        return cls(
-            row[Column.Group],
-            row[Column.Subject],
-            row[Column.Day],
-            row[Column.Lecturer],
-            row[Column.StartTime],
-            row[Column.EndTime],
-            row[Column.Classroom],
-        )
-
-    @property
-    def duration(self) -> timedelta:
-        return datetime.combine(date.min, self.end_time) - datetime.combine(
-            date.min, self.start_time
-        )
-
-
-@dataclass
-class Course:
-    department: str
-    subject: str
-    credits: int
-    lectures: list[Lesson] = field(default_factory=list)
-    exercises: list[Lesson] = field(default_factory=list)
 
 
 def read_courses_file(data_path: str) -> pd.DataFrame:
@@ -106,44 +41,10 @@ def init_courses_map(courses_file_datapath: str) -> dict[str, Course]:
     return courses_map
 
 
-def main():
-    courses = init_courses_map("./input/coursesFile.xlsx")
-    # TODO even if only used for debugging purposes, this code does not need to be here. it won't be used in the final script.
-    # i don't mean you shouldn't have write it, but maybe don't commit it, or maybe write it in a separate script that you don't intend to commit
-    # when committing code with any (decent) ide, it should give you the option to choose which changes to include in the commit
-    # (even between changes within the same file)
-    with open("output.txt", "w") as file:
-        for course_name, course in courses.items():
-            file.write(
-                f"--------------------------------Course: {course_name} ------------------------------------\n"
-            )
-            file.write(f"Department: {course.department}\n")
-            file.write(f"Credits: {course.credits}\n")
-            file.write("Lectures:\n")
-            for lecture in course.lectures:
-                file.write(f"Group: {lecture.group}\n")
-                file.write(f"Subject: {lecture.subject}\n")
-                file.write(f"Day: {lecture.day}\n")
-                file.write(f"Lecturer: {lecture.lecturer}\n")
-                file.write(f"Start Time: {lecture.start_time}\n")
-                file.write(f"End Time: {lecture.end_time}\n")
-                file.write(f"Duration: {lecture.duration}\n")
-                file.write(f"Classroom: {lecture.classroom}\n")
-                file.write("\n")
-            file.write(
-                "--------------------------------Exercises:------------------------------------\n"
-            )
-            for exercise in course.exercises:
-                file.write(f"Group: {exercise.group}\n")
-                file.write(f"Subject: {exercise.subject}\n")
-                file.write(f"Day: {exercise.day}\n")
-                file.write(f"Lecturer: {exercise.lecturer}\n")
-                file.write(f"Start Time: {exercise.start_time}\n")
-                file.write(f"End Time: {exercise.end_time}\n")
-                file.write(f"Duration: {exercise.duration}\n")
-                file.write(f"Classroom: {exercise.classroom}\n")
-                file.write("\n")
-            file.write("\n")
+def main() -> None:
+    data = init_courses_map("./input/coursesFile.xlsx")
+    print(data)
+    ...
 
 
 if __name__ == "__main__":
