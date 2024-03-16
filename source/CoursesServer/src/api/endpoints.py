@@ -12,12 +12,11 @@ async def list_courses() -> list[Course]:
 
 @router.post("", responses=status.HTTP_204_NO_CONTENT)
 async def upload_courses(file: UploadFile):
-    if not file.filename.endswith('.xlsx'):
+    if not file.filename.endswith(".xlsx"):
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
-            detail="The uploaded file should be an .xlsx file"
+            detail="The uploaded file should be an .xlsx file",
         )
 
     contents = await file.read()
     # TODO call parsing script
-
