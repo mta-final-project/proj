@@ -1,11 +1,13 @@
 from fastapi import APIRouter, status, UploadFile, HTTPException
 
+from src.app.models import Course
+
 router = APIRouter(prefix="courses")
 
 
 @router.get("", status_code=status.HTTP_200_OK)
-async def list_courses() -> list:  # TODO add type annotation
-    return []
+async def list_courses() -> list[Course]:
+    return await Course.find_all().to_list()
 
 
 @router.post("", responses=status.HTTP_204_NO_CONTENT)
