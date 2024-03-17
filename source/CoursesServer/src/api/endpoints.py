@@ -2,7 +2,7 @@ from fastapi import APIRouter, status, UploadFile, HTTPException
 
 from src.app.models import Course
 
-router = APIRouter(prefix="courses")
+router = APIRouter(prefix="/courses")
 
 
 @router.get("", status_code=status.HTTP_200_OK)
@@ -10,7 +10,7 @@ async def list_courses() -> list[Course]:
     return await Course.find_all().to_list()
 
 
-@router.post("", responses=status.HTTP_204_NO_CONTENT)
+@router.post("", status_code=status.HTTP_204_NO_CONTENT)
 async def upload_courses(file: UploadFile):
     if not file.filename.endswith(".xlsx"):
         raise HTTPException(
