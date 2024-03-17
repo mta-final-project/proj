@@ -11,7 +11,7 @@ class ApiSettings(BaseModel):
 
 class MongoSettings(BaseModel):
     url: str = "mongodb://user:pass@localhost:27017"
-    database: str = "db"
+    database: str = "courses"
 
 
 class Settings(BaseSettings):

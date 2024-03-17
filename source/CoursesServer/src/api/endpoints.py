@@ -1,4 +1,4 @@
-from fastapi import APIRouter, status, UploadFile, HTTPException
+from fastapi import APIRouter, HTTPException, UploadFile, status
 
 from src.app.models import Course
 
