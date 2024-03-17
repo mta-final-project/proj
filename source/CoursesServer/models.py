@@ -1,9 +1,9 @@
-from typing import Self
-from datetime import time, timedelta, datetime, date
 from dataclasses import dataclass, field
+from datetime import date, datetime, time, timedelta
 from enum import Enum, StrEnum
-import pandas as pd
+from typing import Self
 
+import pandas as pd
 
 LECTURES_IDS = [7, 13, 14, 15]
 

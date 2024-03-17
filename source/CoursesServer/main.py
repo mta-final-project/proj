@@ -1,6 +1,6 @@
 import pandas as pd
 
-from models import Course, Lesson, Column, LECTURES_IDS
+from models import LECTURES_IDS, Column, Course, Lesson
 
 
 def read_courses_file(path: str) -> pd.DataFrame:
