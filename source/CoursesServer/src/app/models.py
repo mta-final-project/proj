@@ -23,7 +23,6 @@ class Column(StrEnum):
 
 class Lesson(BaseModel):
     group: int
-    subject: str
     day: int = Field(..., ge=1, le=7)
     lecturer: str
     start_time: time
@@ -34,7 +33,6 @@ class Lesson(BaseModel):
     def from_row(cls, row: pd.Series) -> Self:
         return cls(
             group=row[Column.Group],
-            subject=row[Column.Subject],
             day=row[Column.Day],
             lecturer=row[Column.Lecturer],
             start_time=row[Column.StartTime],
