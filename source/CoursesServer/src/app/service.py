@@ -1,6 +1,8 @@
-import pandas as pd
 import io
-from src.app.models import Course, Column, Lesson
+
+import pandas as pd
+
+from src.app.models import Column, Course, Lesson
 
 LECTURES_IDS = [7, 13, 14, 15]
 
@@ -29,10 +31,10 @@ def _extract_courses(courses_df: pd.DataFrame) -> dict[str, Course]:
     for _, row in courses_df.iterrows():
         subject = row[Column.Subject]
         course = Course(
-                department=row[Column.Department],
-                subject=subject,
-                credits=row[Column.Credits],
-            )
+            department=row[Column.Department],
+            subject=subject,
+            credits=row[Column.Credits],
+        )
         courses[subject](course)
 
     return courses
