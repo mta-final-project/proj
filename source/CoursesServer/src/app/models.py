@@ -53,6 +53,5 @@ class Course(Document):
     department: str
     subject: str
     credit: int
-    description: str
     lectures: list[Lesson] = Field(default_factory=list)
     exercises: list[Lesson] = Field(default_factory=list)
