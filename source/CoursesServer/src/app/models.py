@@ -2,7 +2,7 @@ from datetime import time
 from enum import StrEnum
 
 from beanie import Document
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 
 class Column(StrEnum):
@@ -22,7 +22,7 @@ class Column(StrEnum):
 class Lesson(BaseModel):
     group: str
     subject: str
-    day: int
+    day: int = Field(..., ge=1, le=7)
     lecturer: str
     start_time: time
     end_time: time
