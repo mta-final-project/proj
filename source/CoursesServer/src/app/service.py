@@ -12,6 +12,10 @@ async def list_courses() -> list[Course]:
     return await Course.find_all().to_list()
 
 
+async def delete_courses() -> None:
+    await Course.delete_all()
+
+
 async def upload_courses(data: bytes):
     df = _read_excel(io.BytesIO(data))
     courses = _extract_courses(df)

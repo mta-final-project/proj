@@ -11,6 +11,11 @@ async def list_courses() -> list[Course]:
     return await service.list_courses()
 
 
+@router.delete("", status_code=status.HTTP_204_NO_CONTENT)
+async def delete_courses() -> None:
+    await service.delete_courses()
+
+
 @router.post("", status_code=status.HTTP_204_NO_CONTENT)
 async def upload_courses(file: UploadFile):
     if not file.filename.endswith(".xlsx"):
