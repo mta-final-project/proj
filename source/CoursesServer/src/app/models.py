@@ -53,6 +53,14 @@ class Group(BaseModel):
     lecturer: str
     lessons: list[Lesson] = Field(default_factory=list)
 
+    @classmethod
+    def from_row(cls, row: pd.Series) -> Self:
+        return cls(
+            group=row[Column.Group],
+            description=row[Column.GroupDescription],
+            lecturer=row[Column.Lecturer],
+        )
+
 
 class Course(Document):
     semester: int = Field(..., ge=1, le=3)
@@ -64,3 +72,12 @@ class Course(Document):
 
     class Settings:
         bson_encoders = {time: str}
+
+    @classmethod
+    def from_row(cls, row: pd.Series) -> Self:
+        return cls(
+            semester=row[Column.Semester],
+            department=row[Column.Department],
+            subject=row[Column.Subject],
+            credit_points=row[Column.Credits],
+        )
