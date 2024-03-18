@@ -5,14 +5,7 @@ import pandas as pd
 from src.app.models import Column, Course, Lesson
 
 LECTURES_IDS = [7, 13, 14, 15]
-DAY_OF_WEEK_MAP = {
-    "א": 1,
-    "ב": 1,
-    "ג": 1,
-    "ד": 1,
-    "ה": 1,
-    "ו": 1
-}
+DAY_OF_WEEK_MAP = {"א": 1, "ב": 1, "ג": 1, "ד": 1, "ה": 1, "ו": 1}
 
 
 async def list_courses() -> list[Course]:
