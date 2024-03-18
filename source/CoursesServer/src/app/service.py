@@ -33,7 +33,7 @@ def _extract_courses(courses_df: pd.DataFrame) -> dict[str, Course]:
         course = Course(
             department=row[Column.Department],
             subject=subject,
-            credits=row[Column.Credits],
+            credit_points=row[Column.Credits],
         )
         courses[subject](course)
 

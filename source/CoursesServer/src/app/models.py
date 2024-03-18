@@ -52,6 +52,6 @@ class Lesson(BaseModel):
 class Course(Document):
     department: str
     subject: str
-    credit: int
+    credit_points: int
     lectures: list[Lesson] = Field(default_factory=list)
     exercises: list[Lesson] = Field(default_factory=list)
