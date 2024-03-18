@@ -10,15 +10,17 @@ import pandas as pd
 class Column(StrEnum):
     Group = "קבוצה"
     Subject = "תיאור נושא"
-    Day = "יום בשבוע"
+    GroupDescription = "מלל חופשי לתלמיד"
+    LessonType = "סוג מקצוע"
+    Semester = "סמסטר"
     Lecturer = "שם מרצה"
+    Day = "יום בשבוע"
     StartTime = "שעת התחלה"
     EndTime = "שעת סיום"
     TotalHours = 'סה"כ שעות'
     Classroom = "תיאור כיתה"
-    Department = "תיאור חוג"
     Credits = 'נ"ז'
-    CourseType = "סוג מקצוע"
+    Department = "תיאור חוג"
 
 
 class Lesson(BaseModel):

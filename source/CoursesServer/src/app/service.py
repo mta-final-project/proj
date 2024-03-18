@@ -55,7 +55,7 @@ def _fill_course_lessons(courses_df: pd.DataFrame, courses: dict[str, Course]) -
         subject = row[Column.Subject]
         course = courses[subject]
 
-        if row[Column.CourseType] not in LECTURES_IDS:
+        if row[Column.LessonType] not in LECTURES_IDS:
             course.lectures.append(lesson)
         else:
             course.exercises.append(lesson)
