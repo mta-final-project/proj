@@ -24,9 +24,7 @@ class Column(StrEnum):
 
 
 class Lesson(BaseModel):
-    group: int
     day: int = Field(..., ge=1, le=7)
-    lecturer: str
     start_time: time
     end_time: time
     classroom: str
@@ -49,12 +47,20 @@ class Lesson(BaseModel):
         )
 
 
+class Group(BaseModel):
+    group: int
+    description: str
+    lecturer: str
+    lessons: list[Lesson] = Field(default_factory=list)
+
+
 class Course(Document):
+    semester: int = Field(..., ge=1, le=3)
     department: str
     subject: str
     credit_points: int
-    lectures: list[Lesson] = Field(default_factory=list)
-    exercises: list[Lesson] = Field(default_factory=list)
+    lectures: list[Group] = Field(default_factory=list)
+    exercises: list[Group] = Field(default_factory=list)
 
     class Settings:
         bson_encoders = {time: str}
