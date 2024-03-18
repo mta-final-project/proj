@@ -58,5 +58,7 @@ def _fill_course_lessons(courses_df: pd.DataFrame, courses: dict[str, Course]) -
 
 
 async def _save_courses(courses: list[Course]) -> None:
+    await Course.delete_all()
+
     for course in courses:
         await course.save()
