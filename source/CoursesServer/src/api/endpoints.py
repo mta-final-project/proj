@@ -1,13 +1,14 @@
 from fastapi import APIRouter, HTTPException, UploadFile, status
 
 from src.app.models import Course
+from src.app.service import list_courses, upload_courses
 
 router = APIRouter(prefix="/courses")
 
 
 @router.get("", status_code=status.HTTP_200_OK)
 async def list_courses() -> list[Course]:
-    return await Course.find_all().to_list()
+    return await list_courses()
 
 
 @router.post("", status_code=status.HTTP_204_NO_CONTENT)
@@ -19,4 +20,4 @@ async def upload_courses(file: UploadFile):
         )
 
     contents = await file.read()
-    # TODO call parsing script
+    await upload_courses(contents)
