@@ -55,3 +55,6 @@ class Course(Document):
     credit_points: int
     lectures: list[Lesson] = Field(default_factory=list)
     exercises: list[Lesson] = Field(default_factory=list)
+
+    class Settings:
+        bson_encoders = {time: str}
