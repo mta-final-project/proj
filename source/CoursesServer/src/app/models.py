@@ -22,7 +22,7 @@ class Column(StrEnum):
 
 
 class Lesson(BaseModel):
-    group: str
+    group: int
     subject: str
     day: int = Field(..., ge=1, le=7)
     lecturer: str

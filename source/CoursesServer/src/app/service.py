@@ -5,6 +5,14 @@ import pandas as pd
 from src.app.models import Column, Course, Lesson
 
 LECTURES_IDS = [7, 13, 14, 15]
+DAY_OF_WEEK_MAP = {
+    "א": 1,
+    "ב": 1,
+    "ג": 1,
+    "ד": 1,
+    "ה": 1,
+    "ו": 1
+}
 
 
 async def list_courses() -> list[Course]:
@@ -22,6 +30,10 @@ async def upload_courses(data: bytes):
 def _read_excel(bytes_io: io.BytesIO) -> pd.DataFrame:
     courses_df = pd.read_excel(bytes_io)
     courses_df[Column.Credits] = courses_df[Column.Credits].fillna(0)
+    courses_df[Column.Classroom] = courses_df[Column.Classroom].fillna("")
+    courses_df[Column.Lecturer] = courses_df[Column.Lecturer].fillna("")
+    courses_df[Column.Day] = courses_df[Column.Day].map(DAY_OF_WEEK_MAP)
+    # TODO check why there are NaNs
 
     return courses_df
 
