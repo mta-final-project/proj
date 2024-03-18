@@ -1,8 +1,10 @@
-from datetime import time
+from typing import Self
+from datetime import time, date, datetime, timedelta
 from enum import StrEnum
 
 from beanie import Document
 from pydantic import BaseModel, Field
+import pandas as pd
 
 
 class Column(StrEnum):
@@ -27,6 +29,24 @@ class Lesson(BaseModel):
     start_time: time
     end_time: time
     classroom: str
+
+    @classmethod
+    def from_row(cls, row: pd.Series) -> Self:
+        return cls(
+            group=row[Column.Group],
+            subject=row[Column.Subject],
+            day=row[Column.Day],
+            lecturer=row[Column.Lecturer],
+            start_time=row[Column.StartTime],
+            end_time=row[Column.EndTime],
+            classroom=row[Column.Classroom],
+        )
+
+    @property
+    def duration(self) -> timedelta:
+        return datetime.combine(date.min, self.end_time) - datetime.combine(
+            date.min, self.start_time
+        )
 
 
 class Course(Document):
