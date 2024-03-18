@@ -21,7 +21,7 @@ async def upload_courses(data: bytes):
 
 def _read_excel(bytes_io: io.BytesIO) -> pd.DataFrame:
     courses_df = pd.read_excel(bytes_io)
-    courses_df = courses_df[Column.Credits].fillna(0)
+    courses_df[Column.Credits] = courses_df[Column.Credits].fillna(0)
 
     return courses_df
 
