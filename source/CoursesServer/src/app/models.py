@@ -34,5 +34,5 @@ class Course(Document):
     subject: str
     credit: int
     description: str
-    lectures: list[Lesson]
-    exercises: list[Lesson]
+    lectures: list[Lesson] = Field(default_factory=list)
+    exercises: list[Lesson] = Field(default_factory=list)
