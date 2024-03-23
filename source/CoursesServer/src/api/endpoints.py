@@ -1,7 +1,7 @@
 from fastapi import APIRouter, HTTPException, UploadFile, status
 
-from src.app.models import Course
-from src.app import service
+from src.apps.courses.models import Course
+from src.apps.courses import service
 
 router = APIRouter(prefix="/courses")
 
