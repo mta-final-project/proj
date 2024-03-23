@@ -1,12 +1,13 @@
 from fastapi import APIRouter, HTTPException, UploadFile, status
 
-from src.app.models import Course
-from src.app import service
+from src.api.courses.schemas import CourseViewSchema
+from src.apps.courses import service
+from src.apps.courses.models import Course
 
 router = APIRouter(prefix="/courses")
 
 
-@router.get("", status_code=status.HTTP_200_OK)
+@router.get("", status_code=status.HTTP_200_OK, response_model=list[CourseViewSchema])
 async def list_courses() -> list[Course]:
     return await service.list_courses()
 

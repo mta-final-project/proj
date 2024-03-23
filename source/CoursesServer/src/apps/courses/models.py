@@ -1,10 +1,10 @@
-from typing import Self
-from datetime import time, date, datetime, timedelta
+from datetime import date, datetime, time, timedelta
 from enum import StrEnum
+from typing import Self
 
+import pandas as pd
 from beanie import Document
 from pydantic import BaseModel, Field
-import pandas as pd
 
 
 class Column(StrEnum):
@@ -81,3 +81,11 @@ class Course(Document):
             subject=row[Column.Subject],
             credit_points=row[Column.Credits],
         )
+
+    @property
+    def number_of_lectures(self) -> int:
+        return len(self.lectures)
+
+    @property
+    def number_of_exercises(self) -> int:
+        return len(self.exercises)

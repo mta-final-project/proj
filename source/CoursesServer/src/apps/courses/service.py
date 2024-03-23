@@ -2,7 +2,7 @@ import io
 
 import pandas as pd
 
-from src.app.models import Column, Course, Group, Lesson
+from src.apps.courses.models import Column, Course, Group, Lesson
 
 LECTURES_IDS = [7, 13, 14, 15]
 DAY_OF_WEEK_MAP = {"א": 1, "ב": 2, "ג": 3, "ד": 4, "ה": 5, "ו": 6}
