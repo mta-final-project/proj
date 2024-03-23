@@ -10,21 +10,21 @@ import pandas as pd
 class Column(StrEnum):
     Group = "קבוצה"
     Subject = "תיאור נושא"
-    Day = "יום בשבוע"
+    GroupDescription = "מלל חופשי לתלמיד"
+    LessonType = "סוג מקצוע"
+    Semester = "סמסטר"
     Lecturer = "שם מרצה"
+    Day = "יום בשבוע"
     StartTime = "שעת התחלה"
     EndTime = "שעת סיום"
     TotalHours = 'סה"כ שעות'
     Classroom = "תיאור כיתה"
-    Department = "תיאור חוג"
     Credits = 'נ"ז'
-    CourseType = "סוג מקצוע"
+    Department = "תיאור חוג"
 
 
 class Lesson(BaseModel):
-    group: int
     day: int = Field(..., ge=1, le=7)
-    lecturer: str
     start_time: time
     end_time: time
     classroom: str
@@ -47,12 +47,37 @@ class Lesson(BaseModel):
         )
 
 
+class Group(BaseModel):
+    group: int
+    description: str
+    lecturer: str
+    lessons: list[Lesson] = Field(default_factory=list)
+
+    @classmethod
+    def from_row(cls, row: pd.Series) -> Self:
+        return cls(
+            group=row[Column.Group],
+            description=row[Column.GroupDescription],
+            lecturer=row[Column.Lecturer],
+        )
+
+
 class Course(Document):
+    semester: int = Field(..., ge=1, le=3)
     department: str
     subject: str
     credit_points: int
-    lectures: list[Lesson] = Field(default_factory=list)
-    exercises: list[Lesson] = Field(default_factory=list)
+    lectures: list[Group] = Field(default_factory=list)
+    exercises: list[Group] = Field(default_factory=list)
 
     class Settings:
         bson_encoders = {time: str}
+
+    @classmethod
+    def from_row(cls, row: pd.Series) -> Self:
+        return cls(
+            semester=row[Column.Semester],
+            department=row[Column.Department],
+            subject=row[Column.Subject],
+            credit_points=row[Column.Credits],
+        )

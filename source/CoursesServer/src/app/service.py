@@ -2,10 +2,10 @@ import io
 
 import pandas as pd
 
-from src.app.models import Column, Course, Lesson
+from src.app.models import Column, Course, Group, Lesson
 
 LECTURES_IDS = [7, 13, 14, 15]
-DAY_OF_WEEK_MAP = {"א": 1, "ב": 1, "ג": 1, "ד": 1, "ה": 1, "ו": 1}
+DAY_OF_WEEK_MAP = {"א": 1, "ב": 2, "ג": 3, "ד": 4, "ה": 5, "ו": 6}
 
 
 async def list_courses() -> list[Course]:
@@ -18,47 +18,47 @@ async def delete_courses() -> None:
 
 async def upload_courses(data: bytes):
     df = _read_excel(io.BytesIO(data))
-    courses = _extract_courses(df)
-    _fill_course_lessons(df, courses)
+    courses = [
+        _create_courses(course)
+        for _, course in df.groupby([Column.Semester, Column.Subject])
+    ]
 
-    await _save_courses(list(courses.values()))
+    await _save_courses(courses)
 
 
 def _read_excel(bytes_io: io.BytesIO) -> pd.DataFrame:
     courses_df = pd.read_excel(bytes_io)
-    courses_df[Column.Credits] = courses_df[Column.Credits].fillna(0)
-    courses_df[Column.Classroom] = courses_df[Column.Classroom].fillna("")
+
+    courses_df[Column.GroupDescription] = courses_df[Column.GroupDescription].fillna("")
     courses_df[Column.Lecturer] = courses_df[Column.Lecturer].fillna("")
-    courses_df[Column.Day] = courses_df[Column.Day].map(DAY_OF_WEEK_MAP)
+    courses_df[Column.Day] = courses_df[Column.Day].apply(DAY_OF_WEEK_MAP.get)
+    courses_df[Column.Classroom] = courses_df[Column.Classroom].fillna("")
+    courses_df[Column.Credits] = courses_df[Column.Credits].fillna(0)
     # TODO check why there are NaNs
 
     return courses_df
 
 
-def _extract_courses(courses_df: pd.DataFrame) -> dict[str, Course]:
-    courses = {}
-    for _, row in courses_df.iterrows():
-        subject = row[Column.Subject]
-        course = Course(
-            department=row[Column.Department],
-            subject=subject,
-            credit_points=row[Column.Credits],
-        )
-        courses[subject] = course
+def _create_courses(course_df: pd.DataFrame) -> Course:
+    lectures = course_df[course_df[Column.LessonType].isin(LECTURES_IDS)]
+    exercises = course_df[~course_df[Column.LessonType].isin(LECTURES_IDS)]
 
-    return courses
+    course = Course.from_row(course_df.iloc[0])
+    course.lectures = [
+        _create_group(group) for _, group in lectures.groupby(Column.Group)
+    ]
+    course.exercises = [
+        _create_group(group) for _, group in exercises.groupby(Column.Group)
+    ]
+
+    return course
 
 
-def _fill_course_lessons(courses_df: pd.DataFrame, courses: dict[str, Course]) -> None:
-    for _, row in courses_df.iterrows():
-        lesson = Lesson.from_row(row)
-        subject = row[Column.Subject]
-        course = courses[subject]
+def _create_group(group_df: pd.DataFrame) -> Group:
+    group = Group.from_row(group_df.iloc[0])
+    group.lessons = [Lesson.from_row(row) for _, row in group_df.iterrows()]
 
-        if row[Column.CourseType] not in LECTURES_IDS:
-            course.lectures.append(lesson)
-        else:
-            course.exercises.append(lesson)
+    return group
 
 
 async def _save_courses(courses: list[Course]) -> None:
