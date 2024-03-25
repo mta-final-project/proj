@@ -7,6 +7,7 @@ from app.db import User, db
 from app.schemas import UserCreate, UserRead, UserUpdate
 from app.users import auth_backend, current_active_user, fastapi_users
 
+
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     await init_beanie(
