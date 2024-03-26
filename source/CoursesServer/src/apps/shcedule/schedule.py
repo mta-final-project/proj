@@ -1,9 +1,19 @@
+from typing import Self
+
 from src.apps.shcedule.models import TimeSlot
 
 
 class Schedule:
     def __init__(self):
         self.lessons = {i: [] for i in range(1, 8)}
+
+    def copy(self) -> Self:
+        new_schedule = Schedule()
+        for day, lessons in self.lessons.items():
+            for lesson in lessons:
+                new_schedule.add_lesson(lesson.copy())
+
+        return new_schedule
 
     def is_available(self, time_slot: TimeSlot) -> bool:
         for lesson in self.lessons[time_slot.day]:
@@ -14,8 +24,12 @@ class Schedule:
 
         return True
 
-    def add_lesson(self, time_slot: TimeSlot):
+    def add_lesson(self, time_slot: TimeSlot) -> None:
         if not self.is_available(time_slot):
             raise ValueError("Time slot is not available")
 
         self.lessons[time_slot.day].append(time_slot)
+
+    def add_lessons(self, time_slot: list[TimeSlot]) -> None:
+        for time_slot in time_slot:
+            self.add_lesson(time_slot)
