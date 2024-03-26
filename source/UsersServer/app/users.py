@@ -13,6 +13,7 @@ from fastapi_users.db import BeanieUserDatabase, ObjectIDIDMixin
 from app.db import User, get_user_db
 
 SECRET = "SECRET"
+#TODO: check how to peoperly generate and safely store the secret key
 
 
 class UserManager(ObjectIDIDMixin, BaseUserManager[User, PydanticObjectId]):
