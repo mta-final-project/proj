@@ -29,7 +29,3 @@ class Schedule:
             raise ValueError("Time slot is not available")
 
         self.lessons[time_slot.day].append(time_slot)
-
-    def add_lessons(self, time_slot: list[TimeSlot]) -> None:
-        for time_slot in time_slot:
-            self.add_lesson(time_slot)
