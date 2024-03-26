@@ -5,7 +5,7 @@ from src.api.schedule.schemas import SelectedGroupsSchema, GroupViewSchema
 from src.apps.courses.models import Course
 from src.apps.shcedule import service
 
-router = APIRouter(prefix="/schedule")
+router = APIRouter(prefix="/schedule", tags=["Schedule"])
 
 
 @router.get("/combinations", status_code=status.HTTP_200_OK)

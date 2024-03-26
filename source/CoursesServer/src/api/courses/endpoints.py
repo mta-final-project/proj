@@ -4,7 +4,7 @@ from src.api.courses.schemas import CourseViewSchema
 from src.apps.courses import service
 from src.apps.courses.models import Course
 
-router = APIRouter(prefix="/courses")
+router = APIRouter(prefix="/courses", tags=["courses"])
 
 
 @router.get("", status_code=status.HTTP_200_OK, response_model=list[CourseViewSchema])
