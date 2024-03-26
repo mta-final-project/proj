@@ -1,7 +1,9 @@
+from beanie import PydanticObjectId
 from pydantic import BaseModel
 
 
 class CourseViewSchema(BaseModel):
+    id: PydanticObjectId
     semester: int
     department: str
     subject: str
