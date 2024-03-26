@@ -1,22 +1,9 @@
-from contextlib import asynccontextmanager
-
-from beanie import init_beanie
 from fastapi import Depends, FastAPI
 
-from app.db import User, db
+from app.db import User
 from app.schemas import UserCreate, UserRead, UserUpdate
 from app.users import auth_backend, current_active_user, fastapi_users
-
-
-@asynccontextmanager
-async def lifespan(app: FastAPI):
-    await init_beanie(
-        database=db,
-        document_models=[
-            User,
-        ],
-    )
-    yield
+from app.lifespan import lifespan
 
 
 app = FastAPI(lifespan=lifespan)
