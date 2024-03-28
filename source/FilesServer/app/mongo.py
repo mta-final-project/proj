@@ -8,4 +8,4 @@ async def init(mongo_url: str, mongo_database: str):
 
     # Initialize beanie with the Sample document class and a database
     await init_beanie(database=client[mongo_database], document_models=[])
-    #TODO add model
+    # TODO add model
